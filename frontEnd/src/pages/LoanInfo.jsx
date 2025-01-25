@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 const LoanInfo = () => {
+  const navigate = useNavigate()
   const [loanRequired, setLoanRequired] = useState("");
   const [loanDeposit, setLoanDeposit] = useState("");
   const [monthsRequired, setMonthsRequired] = useState("");
@@ -132,6 +134,7 @@ const LoanInfo = () => {
 
               <div className="mt-4">
                 <button
+                onClick={()=>navigate('/userLogin')}
                   type="submit"
                   className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
                 >
