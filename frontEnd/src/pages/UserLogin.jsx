@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const UserLogin = () => {
   const [cnic, setCnic] = useState('');
   const [password, setPassword] = useState('');
+
+  // Use the useNavigate hook to navigate
+  const navigate = useNavigate();
 
   // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('CNIC:', cnic);
     console.log('Password:', password);
+
+    // Navigate to the loan details page after submission
+    navigate('/loandetails');
   };
 
   return (
