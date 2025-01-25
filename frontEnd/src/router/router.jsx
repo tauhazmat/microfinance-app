@@ -4,6 +4,7 @@ import Home from "../pages/Home";
 import LoginPage from "../pages/LoginPage";
 import CategoryPage from "../pages/CategoryPage";
 import LoanInfo from "../pages/LoanInfo";
+import UserDashboard from "../pages/userDashboard";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
       {
         path : "loanInfo",
         element : <LoanInfo/>
+      },
+      {
+        path : "userDashboard",
+        element : <UserDashboard/>
       },
       {
         path: "login",
