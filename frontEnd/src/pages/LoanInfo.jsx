@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux'; // Import useDispatch from react-redux
+import { addLoan } from '../store/reducers/loanSlice'; 
 import { useNavigate } from 'react-router';
 
 const LoanInfo = () => {
   const navigate = useNavigate()
-  const [loanRequired, setLoanRequired] = useState("");
-  const [loanDeposit, setLoanDeposit] = useState("");
-  const [monthsRequired, setMonthsRequired] = useState("");
-  
-  const [modalVisible, setModalVisible] = useState(false); // State to control modal visibility
-  const [cnic, setCnic] = useState("");
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+  const [loanRequired, setLoanRequired] = useState('');
+  const [loanDeposit, setLoanDeposit] = useState('');
+  const [monthsRequired, setMonthsRequired] = useState('');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [cnic, setCnic] = useState('');
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+
+  const dispatch = useDispatch(); // Initialize the Redux dispatch function
 
   const calculateFunct = (e) => {
     e.preventDefault();
@@ -18,13 +21,13 @@ const LoanInfo = () => {
       const loanRequiredNum = parseFloat(loanRequired);
       const loanDepositNum = parseFloat(loanDeposit);
       const monthsRequiredNum = parseInt(monthsRequired, 10);
-      
+
       if (!isNaN(loanRequiredNum) && !isNaN(loanDepositNum) && !isNaN(monthsRequiredNum)) {
         const PkrforEachMonth = (loanRequiredNum - loanDepositNum) / monthsRequiredNum;
         alert(`You will pay ${PkrforEachMonth.toFixed(2)} each month.`);
-        setModalVisible(true); // Show modal on successful calculation
+        setModalVisible(true);
       } else {
-        alert("Please enter valid numbers for all fields.");
+        alert('Please enter valid numbers for all fields.');
       }
     }
   };
@@ -32,12 +35,32 @@ const LoanInfo = () => {
   const handleModalSubmit = (e) => {
     e.preventDefault();
     if (!cnic || !email || !name) {
-      alert("All fields are required!");
+      alert('All fields are required!');
       return;
     }
-    // Additional validation for CNIC and email can be added here if needed
-    alert("Details verified successfully!");
-    setModalVisible(false); // Close modal after successful submission
+
+    // Prepare loan data
+    const loanData = {
+      loanRequired,
+      loanDeposit,
+      monthsRequired,
+      cnic,
+      email,
+      name,
+    };
+
+    // Dispatch loan data to Redux store
+    dispatch(addLoan(loanData));
+
+    alert('Details verified and saved successfully!');
+    setModalVisible(false); // Close the modal
+    // Optionally clear the form
+    setLoanRequired('');
+    setLoanDeposit('');
+    setMonthsRequired('');
+    setCnic('');
+    setEmail('');
+    setName('');
   };
 
   return (
@@ -100,7 +123,9 @@ const LoanInfo = () => {
             <h3 className="text-xl font-semibold mb-4">Verify Your Details</h3>
             <form onSubmit={handleModalSubmit} className="space-y-4">
               <div>
-                <label htmlFor="cnic" className="block text-sm font-semibold text-gray-700">CNIC</label>
+                <label htmlFor="cnic" className="block text-sm font-semibold text-gray-700">
+                  CNIC
+                </label>
                 <input
                   type="text"
                   id="cnic"
@@ -111,7 +136,9 @@ const LoanInfo = () => {
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-semibold text-gray-700">Email</label>
+                <label htmlFor="email" className="block text-sm font-semibold text-gray-700">
+                  Email
+                </label>
                 <input
                   type="email"
                   id="email"
@@ -122,7 +149,9 @@ const LoanInfo = () => {
               </div>
 
               <div>
-                <label htmlFor="name" className="block text-sm font-semibold text-gray-700">Name</label>
+                <label htmlFor="name" className="block text-sm font-semibold text-gray-700">
+                  Name
+                </label>
                 <input
                   type="text"
                   id="name"
@@ -134,7 +163,7 @@ const LoanInfo = () => {
 
               <div className="mt-4">
                 <button
-                onClick={()=>navigate('/userLogin')}
+                onClick={()=> navigate('/userDashboard')}
                   type="submit"
                   className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:ring-4 focus:ring-blue-300"
                 >
